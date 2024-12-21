@@ -94,4 +94,3 @@ void Waiter::setNumTables(int num) { numTables = num; }
 
 string Waiter::getAssignedSection() { return assignedSection; }
 void Waiter::setAssignedSection(string section) { assignedSection = section; }
-
