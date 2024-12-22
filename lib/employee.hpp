@@ -1,6 +1,8 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <map>
+#include <random>
 
 using namespace std;
 
@@ -23,21 +25,27 @@ private:
     int salary;
     int yearsEmployed;
     int employeeID;
-    string phoneNumber;
-    string email;
-    string address;
     float performanceRating;
     float shiftDuration;
-    vector<string> attendance;
 
 public:
-    // Constructor
-    Employee(string n, string job, int startH, int startM, int endH, int endM, int y);
+    // constructor
+    Employee(string n, string job, int startH, int startM, int endH, int endM, int y, float performance);
+
+    //gettes and setters
+    string getName();
+    void setName(string n);
+    string getJobTitle();
+    void setJobTitle(string job);
+    int getSalary();
+    float getPerformanceRating();
+    void setPerformanceRating(float rating);
+
 
     void calculateSalary();
     void calculateShiftDuration();
-    void updateAttendance(string date, string status);
     void viewPerformanceRating();
+
     void addEmployee();
     void deleteEmployee();
 };
@@ -46,20 +54,13 @@ class Barista : public Employee
 {
 private:
     int tips;
-    vector<string> specializations;
-    int ordersFulfilled;
-    bool certifications;
-    int errorsInOrders;
+    bool certified;
 
 public:
-    Barista(string n, string job, int startH, int startM, int endH, int endM, int y);
+    Barista(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, bool cert);
 
-    // Methods
     void calculateTips();
     void logOrder();
-    void updateSpecializations(string skill);
-    void trackErrors(int errorCount);
-    void viewCertifications();
 };
 
 
@@ -68,18 +69,14 @@ class Manager : public Employee
 private:
     int numOfPeople;
     string branchLocation;
-    float budgetResponsibility;
-    int complaintsResolved;
-    int teamMeetingsOrganized;
-    int reportsGenerated;
 
 public:
-    Manager(string n, string job, int startH, int startM, int endH, int endM, int y, int numPeople);
+    Manager(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, int numPeople, string location);
 
-    // Methods
-    void approveLeave(string employeeID);
-    void scheduleShifts();
-    void resolveComplaint();
+    //getter and setter
+    int getNumOfPeople();
+    void setNumOfPeople(int num);
+
     void generateReport();
 };
 
@@ -90,18 +87,15 @@ private:
     int numTables;
     int tips;
     string assignedSection;
-    int ordersTaken;
-    vector<string> customerFeedback;
-    float averageServiceTime;
-    int breaksTaken;
 
 public:
-    Waiter(string n, string job, int startH, int startM, int endH, int endM, int y, int numtab);
+    Waiter(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, int numtab, string section);
+
+    int getNumTables();
+    void setNumTables(int num);
+
+    string getAssignedSection();
+    void setAssignedSection(string section);
 
     void calculateTips();
-    void assignSection(string section);
-    void logOrder();
-    void collectFeedback(string feedback);
-    void calculateServiceTime();
-    void trackBreaks(int breakCount);
 };
