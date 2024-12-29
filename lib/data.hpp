@@ -22,13 +22,13 @@ public:
 
     static DB *getInstance();
 
-    void importEmployees();
-    void importOrders();
-    void importProducts();
+    void importEmployees(string city);
+    void importOrders(string city);
+    void importProducts(string city);
 
-    void exportEmployees();
-    void exportOrders();
-    void exportProducts();
+    void exportEmployees(string city);
+    void exportOrders(string city);
+    void exportProducts(string city);
     
 };
 
