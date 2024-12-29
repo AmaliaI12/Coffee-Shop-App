@@ -1,8 +1,9 @@
 #include "lib\employee.hpp"
 
 // employee class implementation
-Employee::Employee(string n, string job, int startH, int startM, int endH, int endM, int y, float performance)
+Employee::Employee(int id, string n, string job, int startH, int startM, int endH, int endM, int y)
 {
+    employeeID = id;
     name = n;
     jobTitle = job;
     startShift.hour = startH;
@@ -11,7 +12,6 @@ Employee::Employee(string n, string job, int startH, int startM, int endH, int e
     endShift.minute = endM;
     yearsEmployed = y;
     calculateSalary();
-    performanceRating = performance;
     calculateShiftDuration();
 }
 
@@ -27,70 +27,58 @@ void Employee::calculateShiftDuration()
         shiftDuration += 24;
 }
 
-void Employee::viewPerformanceRating()
-{
-    cout << "Performance Rating for " << name << ": " << performanceRating << endl;
-}
-
-void Employee::addEmployee()
-{
-    cout << "Adding employee: " << name << endl;
-}
-
-void Employee::deleteEmployee()
-{
-    cout << "Deleting employee: " << name << endl;
-}
 
 // getters and setters
-string Employee::getName() { return name; }
-void Employee::setName(string n) { name = n; }
+string Employee::getName() 
+{ 
+    return name;
+}
+void Employee::setName(string n)
+{ 
+    name = n;
+}
 
-string Employee::getJobTitle() { return jobTitle; }
-void Employee::setJobTitle(string job) { jobTitle = job; }
+string Employee::getJobTitle()
+{
+    return jobTitle;
+}
+
+void Employee::setJobTitle(string job) 
+{ 
+    jobTitle = job;
+}
 
 int Employee::getSalary() { return salary; }
 
-float Employee::getPerformanceRating() { return performanceRating; }
-void Employee::setPerformanceRating(float rating) { performanceRating = rating; }
 
 // barista class implementation
-Barista::Barista(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, bool cert)
-    : Employee(n, job, startH, startM, endH, endM, y,performance), certified(cert){}
+Barista::Barista(int id, string n, string job, int startH, int startM, int endH, int endM, int y, bool cert)
+    : Employee(id, n, job, startH, startM, endH, endM, y), certified(cert){}
+
 
 void Barista::calculateTips()
 { 
 }
 
-void Barista::logOrder()
+void Barista::logOrder(Order order)
 {
     cout << "Barista logged an order." << endl;
 }
 
 // Manager Class Implementation
-Manager::Manager(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, int numPeople, string location)
-    : Employee(n, job, startH, startM, endH, endM, y, performance), numOfPeople(numPeople), branchLocation(location){}
-
-void Manager::generateReport()
-{
-    cout << "Manager generated a report." << endl;
-}
+Manager::Manager(int id, string n, string job, int startH, int startM, int endH, int endM, int y, int numPeople, string location)
+    : Employee(id, n, job, startH, startM, endH, endM, y), numOfPeople(numPeople), branchLocation(location){}
 
 int Manager::getNumOfPeople() { return numOfPeople; }
 void Manager::setNumOfPeople(int num) { numOfPeople = num; }
 
 
-// Waiter Class Implementation
-Waiter::Waiter(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, int numtab, string section)
-    : Employee(n, job, startH, startM, endH, endM, y, performance), numTables(numtab), assignedSection(section){}
-
-void Waiter::calculateTips()
+void Manager::addEmployee()
 {
-    cout << "Tips for Waiter: " << tips << endl;
+    cout << "Adding employee: " << getName() << endl;
 }
 
-int Waiter::getNumTables() { return numTables; }
-void Waiter::setNumTables(int num) { numTables = num; }
-
-string Waiter::getAssignedSection() { return assignedSection; }
-void Waiter::setAssignedSection(string section) { assignedSection = section; }
+void Manager::deleteEmployee()
+{
+    cout << "Deleting employee: " << getName() << endl;
+}

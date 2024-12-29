@@ -1,8 +1,9 @@
+#ifndef EMPLOYEE_H
+#define EMPLOYEE_H
+
 #include <cstring>
 #include <iostream>
-#include <vector>
-#include <map>
-#include <random>
+#include "orders.hpp"
 
 using namespace std;
 
@@ -18,19 +19,18 @@ typedef struct
 class Employee
 {
 private:
+    int employeeID;
     string name;
     string jobTitle;
     TIME startShift;
     TIME endShift;
     int salary;
     int yearsEmployed;
-    int employeeID;
-    float performanceRating;
     float shiftDuration;
 
 public:
     // constructor
-    Employee(string n, string job, int startH, int startM, int endH, int endM, int y, float performance);
+    Employee(int id, string n, string job, int startH, int startM, int endH, int endM, int y);
 
     //gettes and setters
     string getName();
@@ -38,16 +38,9 @@ public:
     string getJobTitle();
     void setJobTitle(string job);
     int getSalary();
-    float getPerformanceRating();
-    void setPerformanceRating(float rating);
-
 
     void calculateSalary();
     void calculateShiftDuration();
-    void viewPerformanceRating();
-
-    void addEmployee();
-    void deleteEmployee();
 };
 
 class Barista : public Employee
@@ -55,14 +48,12 @@ class Barista : public Employee
 private:
     int tips;
     bool certified;
-
 public:
-    Barista(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, bool cert);
+    Barista(int id, string n, string job, int startH, int startM, int endH, int endM, int y, bool cert);
 
     void calculateTips();
-    void logOrder();
+    void logOrder(Order order);
 };
-
 
 class Manager : public Employee
 {
@@ -71,31 +62,17 @@ private:
     string branchLocation;
 
 public:
-    Manager(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, int numPeople, string location);
+    Manager(int id, string n, string job, int startH, int startM, int endH, int endM, int y, int numPeople, string location);
 
     //getter and setter
     int getNumOfPeople();
     void setNumOfPeople(int num);
 
-    void generateReport();
+    //void generateReport();
+
+    void addEmployee();
+    void deleteEmployee();
+    void changeSchedule(Employee employee);
 };
 
-
-class Waiter : public Employee
-{
-private:
-    int numTables;
-    int tips;
-    string assignedSection;
-
-public:
-    Waiter(string n, string job, int startH, int startM, int endH, int endM, int y, float performance, int numtab, string section);
-
-    int getNumTables();
-    void setNumTables(int num);
-
-    string getAssignedSection();
-    void setAssignedSection(string section);
-
-    void calculateTips();
-};
+#endif
