@@ -90,7 +90,6 @@ void Employee::setYearsEmployed(int years)
     yearsEmployed = years;
 }
 
-
 // special employee actions
 void Employee::logOrder(Order order)
 {
@@ -110,6 +109,21 @@ void Employee::deleteEmployee()
 void Employee::changeSchedule(Employee emp)
 {
     cout << "Normal employees cannot do this, contact a manager for this.";
+}
+
+void Employee::addProduct()
+{
+    cout << "Normal employees cannot do this, contact a stock keeper for this.";
+}
+
+void Employee::deleteProduct()
+{
+    cout << "Normal employees cannot do this, contact a stock keeper for this.";
+}
+
+void Employee::stockProduct()
+{
+    cout << "Normal employees cannot do this, contact a stock keeper for this.";
 }
 
 // BARISTA CLASS IMPLEMENTATION
@@ -189,4 +203,55 @@ void Manager::changeSchedule()
 
     DB::getInstance()->getEmployees().at(id).setStartShift(startShift);
     DB::getInstance()->getEmployees().at(id).setEndShift(endShift);
+}
+
+// STOCKKEEPER CLASS IMPLEMENTATION
+
+// constructor
+StockKeeper::StockKeeper(int id, string n, string job, TIME startS, TIME endS, int y)
+    : Employee(id, n, job, startS, endS, y) {}
+
+void StockKeeper::addProduct()
+{
+    string name;
+    float cost, price;
+    int pcs;
+
+    cout << "Enter product information:\n";
+    cout << "Name: ";
+    getchar();
+    getline(cin, name);
+    cout << "Cost: ";
+    cin >> cost;
+    cout << "Price: ";
+    cin >> price;
+    cout << "Pieces in stock: ";
+    cin >> pcs;
+
+    Product prod(name, cost, price, pcs);
+
+    DB::getInstance()->getProducts().insert({name, prod});
+}
+
+void StockKeeper::deleteProduct()
+{
+    cout << "What product do you want to delete? ";
+    string name;
+    getline(cin, name);
+
+    DB::getInstance()->getProducts().erase(name);
+}
+
+void StockKeeper::stockProduct()
+{
+    string name;
+    int newpcs;
+    cout << "Enter product information:\n";
+    cout << "Name: ";
+    getline(cin, name);
+    cout << "Updated stock: ";
+    cin >> newpcs;
+
+    // modify number of pieces in stock
+    DB::getInstance()->getProducts().at(name).setPcs(newpcs);
 }

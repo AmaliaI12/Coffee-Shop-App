@@ -206,13 +206,60 @@ void clientAction()
         clientAction();
 }
 
+void stockerAction()
+{
+    cout << "What is your employee ID? ";
+    int id;
+    cin >> id;
+    getchar();
+
+    // create stocker object to access the specific methods
+    auto it = DB::getInstance()->getEmployees().find(id);
+    Employee emp = it->second;
+    StockKeeper stocker(emp.getEmployeeID(), emp.getName(), emp.getJobTitle(), emp.getStartShift(), emp.getEndShift(), emp.getYearsEmployed());
+
+    char ans;
+    do
+    {
+        cout << "Hi " << stocker.getName() << "! Here's what you can do:\n";
+        cout << "1) Add product\n";
+        cout << "2) Delete product\n";
+        cout << "3) Manage a product's stock\n";
+        cout << "What would you like to do? [1/2/3]: ";
+
+        int action;
+        cin >> action;
+
+        switch (action)
+        {
+        case 1:
+            stocker.addProduct();
+            break;
+        case 2:
+            stocker.deleteProduct();
+            break;
+        case 3:
+            stocker.stockProduct();
+            break;
+        default:
+            cout << "You have to choose 1/2/3.\n";
+        }
+
+        cout << "Would you like to do something else? (y/n) ";
+        cin >> ans;
+
+    } while (ans == 'y' || ans == 'Y');
+
+    cout << "Goodbye " << stocker.getName() << "!\n";
+}
+
 int action()
 {
     // used exceptions to make sure the user input is correct
     try
     {
         int status;
-        cout << "Are you a manager or client? (1 Manager / 2  Client / 3 Exit): ";
+        cout << "Are you a manager, stocker or client? (1 Manager / 2 Stocker/ 3 Client / 4 Exit): ";
         cin >> status;
         getchar();
 
@@ -224,19 +271,25 @@ int action()
         }
         else if (status == 2)
         {
+            stockerAction();
+            // update database
+            DB::getInstance()->exportProducts(city);
+        }
+        else if (status == 3)
+        {
             clientAction();
             // update database
             DB::getInstance()->exportProducts(city);
             DB::getInstance()->exportOrders(city);
             DB::getInstance()->exportLoyalCostumers();
         }
-        else if (status == 3)
+        else if (status == 4)
         {
             return -1;
         }
         else
         {
-            throw invalid_argument("Invalid input! Please select 1, 2 or 3.\n");
+            throw invalid_argument("Invalid input! Please select 1, 2, 3 or 4.\n");
         }
     }
     catch (const invalid_argument &e)

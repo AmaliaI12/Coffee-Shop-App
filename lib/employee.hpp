@@ -7,11 +7,11 @@
 
 using namespace std;
 
-//define base salary and bonus
+// define base salary and bonus
 #define baseSalary 4500 // brut
 #define bonusPerYear 350
 
-//define time structure for shifts
+// define time structure for shifts
 typedef struct
 {
     int hour;
@@ -34,7 +34,7 @@ public:
     // constructor
     Employee(int id, string n, string job, TIME startS, TIME endS, int y);
 
-    //gettes and setters
+    // gettes and setters
     int getEmployeeID();
     void setEmployeeID(int id);
 
@@ -55,42 +55,58 @@ public:
 
     int getSalary();
 
-    //calculate the other attributes
+    // calculate the other attributes
     void calculateSalary();
     void calculateShiftDuration();
 
-    //special employee actions
+    // special employee actions
     void logOrder(Order order);
+
+    // employee management
     void addEmployee();
     void deleteEmployee();
     void changeSchedule(Employee emp);
+
+    // product management
+    void addProduct();
+    void deleteProduct();
+    void stockProduct();
 };
 
-
-//inheritance
+// inheritance
 class Barista : public Employee
 {
 public:
-    //constructor
+    // constructor
     Barista(int id, string n, string job, TIME startS, TIME endS, int y);
     Barista();
 
-    //overriding the employee method
-    void logOrder (Order order);
+    // overriding the employee method
+    void logOrder(Order order);
 };
-
 
 class Manager : public Employee
 {
 public:
     Manager(int id, string n, string job, TIME startS, TIME endS, int y);
 
-    //void generateReport();
+    // void generateReport();
 
-    //overriding the employee methods
+    // overriding the employee methods
     void addEmployee();
     void deleteEmployee();
     void changeSchedule();
+};
+
+class StockKeeper : public Employee
+{
+public:
+    StockKeeper(int id, string n, string job, TIME startS, TIME endS, int y);
+
+    // overriding the employee methods
+    void addProduct();
+    void deleteProduct();
+    void stockProduct();
 };
 
 #endif

@@ -259,20 +259,21 @@ void DB::importProducts(string city)
         // Parse the line
         stringstream ss(line);
         string name;
-        string priceStr, pcsStr;
+        string priceStr, pcsStr, costStr;
 
         // Extract data separated by commas
-        if (!getline(ss, name, ',') || !getline(ss, priceStr, ',') || !getline(ss, pcsStr, ','))
+        if (!getline(ss, name, ',') || !getline(ss, costStr, ',') || !getline(ss, priceStr, ',') || !getline(ss, pcsStr, ','))
         {
             cerr << "Error: Malformed line in file: " << line << '\n';
             continue;
         }
 
+        float cost = stof(costStr);
         float price = stof(priceStr);
         int pcs = stoi(pcsStr);
 
         // Create Product object
-        Product prod(name, price, pcs);
+        Product prod(name, cost, price, pcs);
 
         // Add the product to the map
         products.insert({name, prod});
@@ -296,6 +297,7 @@ void DB::exportProducts(string city)
     for (auto [name, product] : products)
     {
         file << product.getName() << ","
+             << product.getCost() << ","
              << product.getPrice() << ","
              << product.getPcs() << "\n";
     }
