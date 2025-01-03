@@ -18,6 +18,7 @@ private:
 public:
     //constructor
     Product(string n, float pr, int num);
+    Product();
 
     //getters and setters
     void setName(string name);

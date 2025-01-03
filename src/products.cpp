@@ -4,6 +4,9 @@
 Product::Product(string n, float pr, int num)
     : prodName(n), price(pr), pcs(num), inStock(isInStock()) {}
 
+Product::Product()
+    : prodName(""), price(0), pcs(0), inStock(isInStock()) {}
+
 // getters and setters
 void Product::setName(string name)
 {

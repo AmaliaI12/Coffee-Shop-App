@@ -15,29 +15,28 @@ DB* DB::getInstance() {
 void DB::setOrders(vector<Order> o) {
     orders = o;
 }
-vector<Order> DB::getOrders() {
+vector<Order>& DB::getOrders() {
     return orders;
 }
 
 void DB::setProducts(map<string, Product> prod) {
     products = prod;
 }
-map<string, Product> DB::getProducts() {
+map<string, Product>& DB::getProducts() {
     return products;
 }
 
 void DB::setEmployees(map<int, Employee> emp) {
     employees = emp;
 }
-map<int, Employee> DB::getEmployees() {
-    return employees;
-}
+map<int, Employee>& DB::getEmployees() { return employees; }
+
 
 
 //manage file actions
 void DB::importEmployees(string city)
 {
-    string path = "database\\" + city + "\\employee.csv";
+    string path = "database\\" + city + "\\employees.csv";
 
     ifstream file(path);
     if (!file.is_open())
@@ -93,7 +92,7 @@ void DB::importEmployees(string city)
 
 void DB::exportEmployees(string city)
 {
-    string path = "database\\" + city + "\\employee.csv";
+    string path = "database\\" + city + "\\employees.csv";
 
     ofstream file(path);
     if (!file.is_open())

@@ -80,6 +80,17 @@ int Employee::getSalary()
     return salary;
 }
 
+int Employee::getYearsEmployed()
+{
+    return yearsEmployed;
+}
+
+void Employee::setYearsEmployed(int years)
+{
+    yearsEmployed = years;
+}
+
+
 // special employee actions
 void Employee::logOrder(Order order)
 {

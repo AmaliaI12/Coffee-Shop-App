@@ -26,13 +26,13 @@ public:
     static DB *getInstance();
 
     void setOrders(vector<Order> o);
-    vector<Order> getOrders();
+    vector<Order> &getOrders();
 
     void setProducts(map<string, Product> prod);
-    map<string, Product> getProducts();
+    map<string, Product> &getProducts();
 
     void setEmployees(map<int, Employee> emp);
-    map<int, Employee> getEmployees();
+    map<int, Employee> &getEmployees();
 
     void importEmployees(string city);
     void importOrders(string city);

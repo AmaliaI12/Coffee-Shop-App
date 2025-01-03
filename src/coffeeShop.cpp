@@ -5,10 +5,10 @@
 
 using namespace std;
 
+string city;
 
 void importData()
 {
-    string city;
     cout << "Choose a city: Bucuresti, Timisoara, Sibiu, Cluj, Rm Valcea.\n";
     cin >> city;
 
@@ -19,7 +19,6 @@ void importData()
     DB::getInstance()->importProducts(city);
 }
 
-
 // function to call the manager methods
 void managerAction()
 {
@@ -28,7 +27,8 @@ void managerAction()
     cin >> id;
 
     // create manager object to access the specific methods
-    Employee emp = DB::getInstance()->getEmployees().at(id);
+    auto it = DB::getInstance()->getEmployees().find(id);
+    Employee emp = it->second;
     Manager manager(emp.getEmployeeID(), emp.getName(), emp.getJobTitle(), emp.getStartShift(), emp.getEndShift(), emp.getYearsEmployed());
 
     char ans;
@@ -64,9 +64,10 @@ void managerAction()
     } while (ans == 'y' || ans == 'Y');
 
     cout << "Goodbye " << manager.getName() << "!\n";
+    DB::getInstance()->exportEmployees(city);
 }
 
-//function to log client's order
+// function to log client's order
 void clientAction()
 {
     Order order;
