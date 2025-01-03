@@ -131,7 +131,57 @@ void DB::importOrders(string city)
         return;
     }
 
-    
+    vector<Order> importedOrders;
+    string line;
+
+    while (getline(file, line))
+    {
+        // Skip empty lines
+        if (line.empty())
+            continue;
+
+        stringstream ss(line);
+        vector<ITEM> items;
+        string productEntry, totalSumStr;
+
+        // Parse products and their quantities
+        while (getline(ss, productEntry, ','))
+        {
+            size_t colonPos = productEntry.find(':');
+            if (colonPos == string::npos)
+            {
+                totalSumStr = productEntry;
+                break;
+            }
+
+            string productName = productEntry.substr(0, colonPos);
+            string numPcsStr = productEntry.substr(colonPos + 1);
+
+            // Check if the product exists in the products map
+            if (products.find(productName) == products.end())
+            {
+                cerr << "Error: Product '" << productName << "' not found in database. Skipping product.\n";
+                continue;
+            }
+
+            // Add the product and quantity to items
+            int numPcs = stoi(numPcsStr);
+            ITEM item = {products[productName], numPcs};
+            items.push_back(item);
+        }
+
+        // Parse the total sum
+        float totalSum = stof(totalSumStr);
+
+        // Create a new Order
+        Order order;
+        order.setItems(items);
+        order.setTotal(totalSum);
+
+        importedOrders.push_back(order);
+    }
+
+    orders = importedOrders;
 
     file.close();
     cout << "Data imported successfully from " << path << '\n';
@@ -148,9 +198,26 @@ void DB::exportOrders(string city)
         return;
     }
 
+    for (Order order : orders)
+    {
+        vector<ITEM> items = order.getItems();
+
+        for (size_t i = 0; i < items.size(); ++i)
+        {
+            ITEM item = items[i];
+            file << item.product.getName() << ":" << item.numPcs;
+
+            if (i < items.size() - 1)
+                file << ",";
+        }
+
+        file << "," << order.getTotal() << '\n';
+    }
+
     file.close();
     cout << "Data exported successfully to " << path << '\n';
 }
+
 
 void DB::importProducts(string city)
 {
@@ -161,6 +228,35 @@ void DB::importProducts(string city)
     {
         cerr << "Error: Could not open file " << path << '\n';
         return;
+    }
+
+    string line;
+    while (getline(file, line))
+    {
+        // Skip empty lines
+        if (line.empty())
+            continue;
+
+        // Parse the line
+        stringstream ss(line);
+        string name;
+        string priceStr, pcsStr;
+
+        // Extract data separated by commas
+        if (!getline(ss, name, ',') || !getline(ss, priceStr, ',') || !getline(ss, pcsStr, ','))
+        {
+            cerr << "Error: Malformed line in file: " << line << '\n';
+            continue;
+        }
+
+        float price = stof(priceStr);
+        int pcs = stoi(pcsStr);
+
+        // Create Product object
+        Product prod(name, price, pcs);
+
+        // Add the product to the map 
+        products.insert({name, prod});
     }
 
     file.close();
@@ -176,6 +272,15 @@ void DB::exportProducts(string city)
     {
         cerr << "Error: Could not open file " << path << '\n';
         return;
+    }
+
+    file << "ProductName,Price,Quantity\n";
+
+    for (auto [name, product] : products)
+    {
+        file << product.getName() << "," 
+             << product.getPrice() << "," 
+             << product.getPcs() << "\n";
     }
 
     file.close();
