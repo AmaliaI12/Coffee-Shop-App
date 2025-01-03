@@ -3,13 +3,15 @@
 
 #include <cstring>
 #include <iostream>
-#include "orders.hpp"
+#include "order.hpp"
 
 using namespace std;
 
+//define base salary and bonus
 #define baseSalary 4500 // brut
 #define bonusPerYear 350
 
+//define time structure for shifts
 typedef struct
 {
     int hour;
@@ -33,46 +35,61 @@ public:
     Employee(int id, string n, string job, int startH, int startM, int endH, int endM, int y);
 
     //gettes and setters
+    int getEmployeeID();
+    void setEmployeeID(int id);
+
     string getName();
     void setName(string n);
+
     string getJobTitle();
     void setJobTitle(string job);
+
+    TIME getStartShift();
+    void setStartShift(TIME time);
+
+    TIME getEndShift();
+    void setEndShift(TIME time);
+
+    int getYearsEmployed();
+    void setYearsEmployed(int years);
+
     int getSalary();
 
+    //calculate the other attributes
     void calculateSalary();
     void calculateShiftDuration();
+
+    //special employee actions
+    void logOrder(Order order);
+    void addEmployee();
+    void deleteEmployee();
+    void changeSchedule();
 };
 
+
+//inheritance
 class Barista : public Employee
 {
-private:
-    int tips;
-    bool certified;
 public:
-    Barista(int id, string n, string job, int startH, int startM, int endH, int endM, int y, bool cert);
+    //constructor
+    Barista(int id, string n, string job, int startH, int startM, int endH, int endM, int y);
 
-    void calculateTips();
-    void logOrder(Order order);
+    //overriding the employee method
+    void logOrder (Order order);
 };
+
 
 class Manager : public Employee
 {
-private:
-    int numOfPeople;
-    string branchLocation;
-
 public:
-    Manager(int id, string n, string job, int startH, int startM, int endH, int endM, int y, int numPeople, string location);
-
-    //getter and setter
-    int getNumOfPeople();
-    void setNumOfPeople(int num);
+    Manager(int id, string n, string job, int startH, int startM, int endH, int endM, int y);
 
     //void generateReport();
 
+    //overriding the employee methods
     void addEmployee();
     void deleteEmployee();
-    void changeSchedule(Employee employee);
+    void changeSchedule();
 };
 
 #endif
