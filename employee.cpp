@@ -1,15 +1,16 @@
 #include "lib\employee.hpp"
+#include "lib\data.hpp"
 
-// employee class implementation
-Employee::Employee(int id, string n, string job, int startH, int startM, int endH, int endM, int y)
+// EMPLOYEE CLASS IMPLEMENTATION
+
+// constructor
+Employee::Employee(int id, string n, string job, TIME startS, TIME endS, int y)
 {
     employeeID = id;
     name = n;
     jobTitle = job;
-    startShift.hour = startH;
-    startShift.minute = startM;
-    endShift.hour = endH;
-    endShift.minute = endM;
+    startShift = startS;
+    endShift = endS;
     yearsEmployed = y;
     calculateSalary();
     calculateShiftDuration();
@@ -19,7 +20,6 @@ void Employee::calculateSalary()
 {
     salary = baseSalary + (yearsEmployed * bonusPerYear);
 }
-
 void Employee::calculateShiftDuration()
 {
     shiftDuration = (endShift.hour + endShift.minute / 60.0) - (startShift.hour + startShift.minute / 60.0);
@@ -27,14 +27,22 @@ void Employee::calculateShiftDuration()
         shiftDuration += 24;
 }
 
-
 // getters and setters
-string Employee::getName() 
-{ 
+int Employee::getEmployeeID()
+{
+    return employeeID;
+}
+void Employee::setEmployeeID(int id)
+{
+    employeeID = id;
+}
+
+string Employee::getName()
+{
     return name;
 }
 void Employee::setName(string n)
-{ 
+{
     name = n;
 }
 
@@ -42,43 +50,129 @@ string Employee::getJobTitle()
 {
     return jobTitle;
 }
-
-void Employee::setJobTitle(string job) 
-{ 
+void Employee::setJobTitle(string job)
+{
     jobTitle = job;
 }
 
-int Employee::getSalary() { return salary; }
-
-
-// barista class implementation
-Barista::Barista(int id, string n, string job, int startH, int startM, int endH, int endM, int y, bool cert)
-    : Employee(id, n, job, startH, startM, endH, endM, y), certified(cert){}
-
-
-void Barista::calculateTips()
-{ 
+TIME Employee::getStartShift()
+{
+    return startShift;
 }
 
+void Employee::setStartShift(TIME st)
+{
+    startShift = st;
+}
+
+TIME Employee::getEndShift()
+{
+    return endShift;
+}
+
+void Employee::setEndShift(TIME st)
+{
+    endShift = st;
+}
+
+int Employee::getSalary()
+{
+    return salary;
+}
+
+// special employee actions
+void Employee::logOrder(Order order)
+{
+    cout << "Normal employees cannot log orders, contact a barista for this.";
+}
+
+void Employee::addEmployee()
+{
+    cout << "Normal employees cannot do this, contact a manager for this.";
+}
+
+void Employee::deleteEmployee()
+{
+    cout << "Normal employees cannot do this, contact a manager for this.";
+}
+
+void Employee::changeSchedule(Employee emp)
+{
+    cout << "Normal employees cannot do this, contact a manager for this.";
+}
+
+// BARISTA CLASS IMPLEMENTATION
+
+// constructor
+Barista::Barista(int id, string n, string job, TIME startS, TIME endS, int y)
+    : Employee(id, n, job, startS, endS, y) {}
+
+// spectial barista action
 void Barista::logOrder(Order order)
 {
-    cout << "Barista logged an order." << endl;
+    DB::getInstance()->getOrders().push_back(order);
+    cout << "The order has been logged successfully!";
 }
 
-// Manager Class Implementation
-Manager::Manager(int id, string n, string job, int startH, int startM, int endH, int endM, int y, int numPeople, string location)
-    : Employee(id, n, job, startH, startM, endH, endM, y), numOfPeople(numPeople), branchLocation(location){}
+// MANAGER CLASS IMPLEMENTATION
 
-int Manager::getNumOfPeople() { return numOfPeople; }
-void Manager::setNumOfPeople(int num) { numOfPeople = num; }
+// constructor
+Manager::Manager(int id, string n, string job, TIME startS, TIME endS, int y)
+    : Employee(id, n, job, startS, endS, y) {}
 
-
+// special manager actions
 void Manager::addEmployee()
 {
-    cout << "Adding employee: " << getName() << endl;
+    int id;
+    string name;
+    string jobTitle;
+    TIME startShift;
+    TIME endShift;
+    int yearsEmployed;
+    cout << "Employee information:\n";
+
+    cout << "ID: ";
+    cin >> id;
+    cout << "Name: ";
+    cin >> name;
+    cout << "Job title: ";
+    cin >> jobTitle;
+    cout << "Start of shift: [hh mm] ";
+    cin >> startShift.hour >> startShift.minute;
+    cout << "End of shift: [hh mm] ";
+    cin >> endShift.hour >> endShift.minute;
+    cout << "Years employed in this coffee shop: ";
+    cin >> yearsEmployed;
+
+    Employee emp(id, name, jobTitle, startShift, endShift, yearsEmployed);
+
+    DB::getInstance()->getEmployees().insert({id, emp});
+    cout << "Successfully added the employee.\n";
 }
 
 void Manager::deleteEmployee()
 {
-    cout << "Deleting employee: " << getName() << endl;
+    cout << "What is the ID of the employee you want to delete? ";
+    int id;
+    cin >> id;
+    DB::getInstance()->getEmployees().erase(id);
+    cout << "Successfully deleted the employee.\n";
+}
+
+void Manager::changeSchedule()
+{
+    cout << "What is the ID of the employee you want to change the schedule for? ";
+    int id;
+    cin >> id;
+
+    TIME startShift;
+    TIME endShift;
+
+    cout << "New start of shift: [hh mm] ";
+    cin >> startShift.hour >> startShift.minute;
+    cout << "New end of shift: [hh mm] ";
+    cin >> endShift.hour >> endShift.minute;
+
+    DB::getInstance()->getEmployees().at(id).setStartShift(startShift);
+    DB::getInstance()->getEmployees().at(id).setEndShift(endShift);
 }

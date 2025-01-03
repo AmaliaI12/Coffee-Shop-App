@@ -32,7 +32,7 @@ private:
 
 public:
     // constructor
-    Employee(int id, string n, string job, int startH, int startM, int endH, int endM, int y);
+    Employee(int id, string n, string job, TIME startS, TIME endS, int y);
 
     //gettes and setters
     int getEmployeeID();
@@ -63,7 +63,7 @@ public:
     void logOrder(Order order);
     void addEmployee();
     void deleteEmployee();
-    void changeSchedule();
+    void changeSchedule(Employee emp);
 };
 
 
@@ -72,7 +72,7 @@ class Barista : public Employee
 {
 public:
     //constructor
-    Barista(int id, string n, string job, int startH, int startM, int endH, int endM, int y);
+    Barista(int id, string n, string job, TIME startS, TIME endS, int y);
 
     //overriding the employee method
     void logOrder (Order order);
@@ -82,7 +82,7 @@ public:
 class Manager : public Employee
 {
 public:
-    Manager(int id, string n, string job, int startH, int startM, int endH, int endM, int y);
+    Manager(int id, string n, string job, TIME startS, TIME endS, int y);
 
     //void generateReport();
 
