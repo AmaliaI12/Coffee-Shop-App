@@ -9,6 +9,16 @@ Order::Order()
 }
 
 // getters and setters
+void Order::setClientName(string name)
+{
+    clientName = name;
+}
+
+string Order::getClientName()
+{
+    return clientName;
+}
+
 void Order::setTotal(float sum)
 {
     totalSum = sum;

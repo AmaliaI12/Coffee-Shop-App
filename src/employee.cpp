@@ -146,10 +146,11 @@ void Manager::addEmployee()
 
     cout << "ID: ";
     cin >> id;
+    getchar();
     cout << "Name: ";
-    cin >> name;
+    getline(cin, name);
     cout << "Job title: ";
-    cin >> jobTitle;
+    getline(cin, jobTitle);
     cout << "Start of shift: [hh mm] ";
     cin >> startShift.hour >> startShift.minute;
     cout << "End of shift: [hh mm] ";

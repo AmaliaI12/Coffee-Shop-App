@@ -13,6 +13,7 @@ typedef struct{
 
 class Order {
 private:
+    string clientName;
     vector<ITEM> items;
     float totalSum;
 public:
@@ -20,6 +21,9 @@ public:
     Order();
 
     //getters and setters
+    void setClientName(string name);
+    string getClientName();
+
     void setTotal(float sum);
     float getTotal();
 

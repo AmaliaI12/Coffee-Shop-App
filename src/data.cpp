@@ -2,38 +2,55 @@
 #include <fstream>
 #include <sstream>
 
-DB* DB::instance = nullptr;
+DB *DB::instance = nullptr;
 
-DB* DB::getInstance() {
-    if (instance == nullptr) {
+DB *DB::getInstance()
+{
+    if (instance == nullptr)
+    {
         instance = new DB();
     }
     return instance;
 }
 
-//getters and setters
-void DB::setOrders(vector<Order> o) {
+// getters and setters
+void DB::setOrders(vector<Order> o)
+{
     orders = o;
 }
-vector<Order>& DB::getOrders() {
+vector<Order> &DB::getOrders()
+{
     return orders;
 }
 
-void DB::setProducts(map<string, Product> prod) {
+void DB::setProducts(map<string, Product> prod)
+{
     products = prod;
 }
-map<string, Product>& DB::getProducts() {
+map<string, Product> &DB::getProducts()
+{
     return products;
 }
 
-void DB::setEmployees(map<int, Employee> emp) {
+void DB::setEmployees(map<int, Employee> emp)
+{
     employees = emp;
 }
-map<int, Employee>& DB::getEmployees() { return employees; }
+map<int, Employee> &DB::getEmployees()
+{
+    return employees;
+}
 
+map<string, int> &DB::getLoyalClients()
+{
+    return loyalClients;
+}
+void DB::setLoyalClients(map<string, int> cli)
+{
+    loyalClients = cli;
+}
 
-
-//manage file actions
+// manage file actions
 void DB::importEmployees(string city)
 {
     string path = "database\\" + city + "\\employees.csv";
@@ -140,8 +157,11 @@ void DB::importOrders(string city)
             continue;
 
         stringstream ss(line);
+        string cliName;
         vector<ITEM> items;
         string productEntry, totalSumStr;
+
+        getline(ss, cliName, ',');
 
         // Parse products and their quantities
         while (getline(ss, productEntry, ','))
@@ -199,6 +219,7 @@ void DB::exportOrders(string city)
 
     for (Order order : orders)
     {
+        file << order.getClientName() << ',';
         vector<ITEM> items = order.getItems();
 
         for (size_t i = 0; i < items.size(); ++i)
@@ -216,7 +237,6 @@ void DB::exportOrders(string city)
     file.close();
     cout << "Data exported successfully to " << path << '\n';
 }
-
 
 void DB::importProducts(string city)
 {
@@ -254,7 +274,7 @@ void DB::importProducts(string city)
         // Create Product object
         Product prod(name, price, pcs);
 
-        // Add the product to the map 
+        // Add the product to the map
         products.insert({name, prod});
     }
 
@@ -275,9 +295,70 @@ void DB::exportProducts(string city)
 
     for (auto [name, product] : products)
     {
-        file << product.getName() << "," 
-             << product.getPrice() << "," 
+        file << product.getName() << ","
+             << product.getPrice() << ","
              << product.getPcs() << "\n";
+    }
+
+    file.close();
+    cout << "Data exported successfully to " << path << '\n';
+}
+
+void DB::importLoyalCostumers()
+{
+    string path = "database\\loyalCostumers.csv";
+
+    ifstream file(path);
+    if (!file.is_open())
+    {
+        cerr << "Error: Could not open file " << path << '\n';
+        return;
+    }
+
+    string line;
+    while (getline(file, line))
+    {
+        // Skip empty lines
+        if (line.empty())
+            continue;
+
+        // Parse the line
+        stringstream ss(line);
+        string name, pointstr;
+
+        // Extract data separated by commas
+        if (!getline(ss, name, ',') || !getline(ss, pointstr, ','))
+        {
+            cerr << "Error: Malformed line in file: " << line << '\n';
+            continue;
+        }
+
+        int points = stoi(pointstr);
+
+        // Add the client to the map
+        loyalClients.insert({name, points});
+    }
+
+    file.close();
+    cout << "Data imported successfully from " << path << '\n';
+}
+
+void DB::exportLoyalCostumers()
+{
+    string path = "database\\loyalCostumers.csv";
+
+    ofstream file(path);
+    if (!file.is_open())
+    {
+        cerr << "Error: Could not open file " << path << '\n';
+        return;
+    }
+
+    for (auto [name, points] : loyalClients)
+    {
+        file << name << ","
+             << points << ","
+             << "\n";
     }
 
     file.close();

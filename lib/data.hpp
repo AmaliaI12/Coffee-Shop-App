@@ -17,6 +17,7 @@ private:
     vector<Order> orders;
     map<string, Product> products;
     map<int, Employee> employees;
+    map<string,int> loyalClients;
     static DB *instance;
     DB() {}
 
@@ -34,13 +35,20 @@ public:
     void setEmployees(map<int, Employee> emp);
     map<int, Employee> &getEmployees();
 
+    void setLoyalClients(map<string, int> cli);
+    map<string, int> &getLoyalClients();
+
+    //import methods
     void importEmployees(string city);
     void importOrders(string city);
     void importProducts(string city);
+    void importLoyalCostumers();
 
+    //export methods
     void exportEmployees(string city);
     void exportOrders(string city);
     void exportProducts(string city);
+    void exportLoyalCostumers();
 };
 
 #endif
