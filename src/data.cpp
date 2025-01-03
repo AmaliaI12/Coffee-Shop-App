@@ -273,8 +273,6 @@ void DB::exportProducts(string city)
         return;
     }
 
-    file << "ProductName,Price,Quantity\n";
-
     for (auto [name, product] : products)
     {
         file << product.getName() << "," 

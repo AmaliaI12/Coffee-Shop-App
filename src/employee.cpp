@@ -124,7 +124,7 @@ Barista::Barista() : Employee(0, "", "Barista", {0, 0}, {0, 0}, 0) {}
 void Barista::logOrder(Order order)
 {
     DB::getInstance()->getOrders().push_back(order);
-    cout << "The order has been logged successfully!";
+    cout << "The order has been logged successfully!\n";
 }
 
 // MANAGER CLASS IMPLEMENTATION

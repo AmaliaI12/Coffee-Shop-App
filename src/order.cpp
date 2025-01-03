@@ -27,14 +27,18 @@ vector<ITEM> Order::getItems()
     return items;
 }
 
-void Order::calculateTotal() {
+void Order::calculateTotal()
+{
     totalSum = 0;
-    for (ITEM item : items) {
+    for (ITEM item : items)
+    {
         totalSum += item.product.getPrice() * item.numPcs;
     }
 }
 
-void Order::addItem(Product prod, int num) {
+void Order::addItem(Product prod, int num)
+{
+    // substract the sold items from the stock
+    DB::getInstance()->getProducts().at(prod.getName()).setPcs(prod.getPcs() - num);
     items.push_back({prod, num});
 }
-
