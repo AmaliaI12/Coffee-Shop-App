@@ -103,9 +103,11 @@ void Employee::changeSchedule(Employee emp)
 
 // BARISTA CLASS IMPLEMENTATION
 
-// constructor
+// constructors
 Barista::Barista(int id, string n, string job, TIME startS, TIME endS, int y)
     : Employee(id, n, job, startS, endS, y) {}
+
+Barista::Barista() : Employee(0, "", "Barista", {0, 0}, {0, 0}, 0) {}
 
 // spectial barista action
 void Barista::logOrder(Order order)

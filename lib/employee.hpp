@@ -73,6 +73,7 @@ class Barista : public Employee
 public:
     //constructor
     Barista(int id, string n, string job, TIME startS, TIME endS, int y);
+    Barista();
 
     //overriding the employee method
     void logOrder (Order order);
