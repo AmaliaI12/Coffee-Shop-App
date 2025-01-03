@@ -1,5 +1,5 @@
-#include "lib\employee.hpp"
-#include "lib\data.hpp"
+#include "..\lib\employee.hpp"
+#include "..\lib\data.hpp"
 
 // EMPLOYEE CLASS IMPLEMENTATION
 
