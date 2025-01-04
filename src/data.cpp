@@ -1,6 +1,5 @@
 #include "../lib/data.hpp"
 
-
 // initialize null instance
 DB *DB::instance = nullptr;
 
@@ -48,6 +47,16 @@ map<string, int> &DB::getLoyalClients()
 void DB::setLoyalClients(map<string, int> cli)
 {
     loyalClients = cli;
+}
+
+map<string, MusicEvent> &DB::getMusicEvents()
+{
+    return musicEvents;
+}
+
+map<string, TastingEvent> &DB::getTastingEvents()
+{
+    return tastingEvents;
 }
 
 // manage file actions
@@ -123,7 +132,7 @@ void DB::exportEmployees(string city)
         return;
     }
 
-    //write employee information to the file
+    // write employee information to the file
     for (auto [id, emp] : employees)
     {
         TIME startShift = emp.getStartShift();
@@ -372,3 +381,85 @@ void DB::exportLoyalCostumers()
     file.close();
     cout << "Data exported successfully to " << path << '\n';
 }
+
+// import events from a single CSV file
+void DB::importEvents(string city)
+{
+    string path = "database\\" + city + "\\events.csv";
+    ifstream file(path);
+
+    if (!file.is_open())
+    {
+        cerr << "Error: Could not open file at " << path << '\n';
+        return;
+    }
+
+    string line;
+    while (getline(file, line))
+    {
+        stringstream ss(line);
+        string type, dateStr, productGuest;
+        float bandCostOrCost;
+
+        // read event type
+        getline(ss, type, ',');
+
+        // read date (dd/mm/yyyy)
+        getline(ss, dateStr, ',');
+
+        // read product/guest name
+        getline(ss, productGuest, ',');
+
+        // read band cost or product count
+        ss >> bandCostOrCost;
+
+        // add the event to the respective map
+        if (type == "Music")
+        {
+            musicEvents[dateStr] = MusicEvent(dateStr, productGuest, bandCostOrCost);
+        }
+        else if (type == "Tasting")
+        {
+            tastingEvents[dateStr] = TastingEvent(dateStr, productGuest, static_cast<int>(bandCostOrCost));
+        }
+        else
+        {
+            cerr << "Unknown event type: " << type << '\n';
+        }
+    }
+
+    file.close();
+    cout << "Data imported successfully from " << path << '\n';
+}
+
+void DB::exportEvents(string city)
+{
+    string path = "database/" + city + "/events.csv";
+    ofstream outFile(path);
+
+    if (!outFile.is_open())
+    {
+        cerr << "Error: Could not open file for exporting events!" << endl;
+        return;
+    }
+
+    // export MusicEvents
+    for (auto entry : musicEvents)
+    {
+        string dateStr = entry.first;
+        MusicEvent musicEvent = entry.second;
+        outFile << "Music," << dateStr << "," << musicEvent.getGuest() << "," << musicEvent.getBandCost() << "\n";
+    }
+
+    // Export TastingEvents
+    for (auto entry : tastingEvents)
+    {
+        string dateStr = entry.first;
+        TastingEvent tastingEvent = entry.second;
+        outFile << "Tasting," << dateStr << "," << tastingEvent.getProduct() << "," << tastingEvent.getNumProd() << "\n";
+    }
+
+    outFile.close();
+    cout << "Events exported successfully to " << path << '\n';
+}
+

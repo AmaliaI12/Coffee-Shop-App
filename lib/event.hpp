@@ -11,47 +11,45 @@ using namespace std;
 #define flowerCost 100
 #define personalizedMugs 500
 
-typedef struct
-{
-    int day, month, year;
-} DATE;
-
 // use abstractization
 class Event
 {
 public:
     virtual void eventInfo() = 0;
-    virtual DATE getDate() = 0;
+    virtual string getDate() = 0;
 };
 
 class MusicEvent : public Event
 {
 private:
-    DATE date;
+    string dateStr;
     string guest;
     float bandCost;
     float totalCost;
 
 public:
     MusicEvent();
-    MusicEvent(DATE d, string g, float bandCost);
+    MusicEvent(string d, string g, float bandCost);
     void eventInfo() override;
-    DATE getDate() override;
+    string getDate() override;
+    string getGuest();
+    float getBandCost();
 };
 
 class TastingEvent : public Event
 {
 private:
-    DATE date;
+    string dateStr;
     string prod;
-    int numFreeProd;
+    int numProd;
     float cost;
-
 public:
     TastingEvent();
-    TastingEvent(DATE d, string p, int num);
+    TastingEvent(string d, string p, int num);
     void eventInfo() override;
-    DATE getDate() override;
+    string getDate() override;
+    string getProduct();
+    int getNumProd();
 };
 
 #endif

@@ -20,6 +20,7 @@ void importData()
     DB::getInstance()->importProducts(city);
     DB::getInstance()->importOrders(city);
     DB::getInstance()->importLoyalCostumers();
+    //DB::getInstance()->importEvents(city);
 }
 
 // function to call the manager methods
@@ -330,17 +331,16 @@ int action()
     return 0;
 }
 
-DATE getTodayDate()
+string getTodayDate()
 {
     time_t t = time(nullptr);
     tm *now = localtime(&t);
 
-    DATE today;
-    today.day = now->tm_mday;
-    today.month = now->tm_mon + 1;
-    today.year = now->tm_year + 1900;
+    // format the date as "dd/mm/yyyy"
+    char buffer[11];
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y", now);
 
-    return today;
+    return string(buffer);
 }
 
 int main()
@@ -351,6 +351,15 @@ int main()
     {
         if (ret == 1)
             importData();
+        
+        auto it = DB::getInstance()->getMusicEvents().find(getTodayDate());
+        if (it != DB::getInstance()->getMusicEvents().end())
+        {
+            cout << "Today is a special event!\n";
+            it->second.eventInfo();
+        }
+        else
+            cout << "There's no event today\n";
         cout << "------------------WELCOME TO COOL COFFEE!------------------\n";
         ret = action();
 
