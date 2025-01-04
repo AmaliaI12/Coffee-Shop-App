@@ -1,6 +1,6 @@
-#include "..\lib\employee.hpp"
-#include "..\lib\data.hpp"
-#include "..\lib\raport.hpp"
+#include "../lib/employee.hpp"
+#include "../lib/data.hpp"
+#include "../lib/raport.hpp"
 
 // EMPLOYEE CLASS IMPLEMENTATION
 
@@ -227,6 +227,7 @@ void Manager::generateReport(string city) {
         cerr << "Error generating reports: " << e.what() << "\n";
     }
 }
+
 
 // STOCKKEEPER CLASS IMPLEMENTATION
 

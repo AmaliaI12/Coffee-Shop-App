@@ -1,8 +1,8 @@
-#include "..\lib\employee.hpp"
-#include "..\lib\order.hpp"
-#include "..\lib\product.hpp"
-#include "..\lib\data.hpp"
-#include "..\lib\event.hpp"
+#include "../lib/employee.hpp"
+#include "../lib/order.hpp"
+#include "../lib/product.hpp"
+#include "../lib/data.hpp"
+#include "../lib/event.hpp"
 #include <time.h>
 
 using namespace std;

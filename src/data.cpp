@@ -1,4 +1,5 @@
-#include "..\lib\data.hpp"
+#include "../lib/data.hpp"
+
 
 // initialize null instance
 DB *DB::instance = nullptr;

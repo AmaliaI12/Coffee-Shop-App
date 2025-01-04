@@ -2,7 +2,7 @@
 #define RAPORT_H
 
 #include <iomanip>
-#include "..\lib\data.hpp"
+#include "data.hpp"
 
 //using tamplate to generate raport in multiple languages
 template <typename Lang>

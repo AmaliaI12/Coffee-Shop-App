@@ -1,4 +1,4 @@
-#include "..\lib\raport.hpp"
+#include "../lib/raport.hpp"
 
 template <typename Lang>
 void Raport<Lang>::generate(const string &filename)

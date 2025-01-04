@@ -1,5 +1,5 @@
-#include "..\lib\order.hpp"
-#include "..\lib\data.hpp"
+#include "../lib/order.hpp"
+#include "../lib/data.hpp"
 
 // default constructor
 Order::Order()

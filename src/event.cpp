@@ -1,5 +1,5 @@
-#include "..\lib\event.hpp"
-#include "..\lib\data.hpp"
+#include "../lib/event.hpp"
+#include "../lib/data.hpp"
 
 // default constructor
 MusicEvent::MusicEvent() : guest("Unknown"), bandCost(0.0f), totalCost(0.0f)

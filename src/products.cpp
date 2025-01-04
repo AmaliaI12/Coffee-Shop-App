@@ -1,4 +1,4 @@
-#include "..\lib\product.hpp"
+#include "../lib/product.hpp"
 
 // constructor
 Product::Product(string n, float cst, float pr, int num)
