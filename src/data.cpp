@@ -1,7 +1,6 @@
 #include "..\lib\data.hpp"
-#include <fstream>
-#include <sstream>
 
+// initialize null instance
 DB *DB::instance = nullptr;
 
 DB *DB::getInstance()
@@ -51,10 +50,13 @@ void DB::setLoyalClients(map<string, int> cli)
 }
 
 // manage file actions
+
 void DB::importEmployees(string city)
 {
+    // parse the file path
     string path = "database\\" + city + "\\employees.csv";
 
+    // handle error
     ifstream file(path);
     if (!file.is_open())
     {
@@ -98,8 +100,10 @@ void DB::importEmployees(string city)
         getline(ss, field, ',');
         yearsEmployed = stoi(field);
 
+        // create new employee object
         Employee emp(employeeID, name, jobTitle, {startH, startM}, {endH, endM}, yearsEmployed);
 
+        // add object to the map
         employees.insert({employeeID, emp});
     }
 
@@ -118,6 +122,7 @@ void DB::exportEmployees(string city)
         return;
     }
 
+    //write employee information to the file
     for (auto [id, emp] : employees)
     {
         TIME startShift = emp.getStartShift();
@@ -163,7 +168,7 @@ void DB::importOrders(string city)
 
         getline(ss, cliName, ',');
 
-        // Parse products and their quantities
+        // parse products and their quantities
         while (getline(ss, productEntry, ','))
         {
             size_t colonPos = productEntry.find(':');
@@ -176,23 +181,23 @@ void DB::importOrders(string city)
             string productName = productEntry.substr(0, colonPos);
             string numPcsStr = productEntry.substr(colonPos + 1);
 
-            // Check if the product exists in the products map
+            // check if the product exists in the products map
             if (products.find(productName) == products.end())
             {
                 cerr << "Error: Product '" << productName << "' not found in database. Skipping product.\n";
                 continue;
             }
 
-            // Add the product and quantity to items
+            // add the product and quantity to items
             int numPcs = stoi(numPcsStr);
             ITEM item = {products[productName], numPcs};
             items.push_back(item);
         }
 
-        // Parse the total sum
+        // parse the total sum
         float totalSum = stof(totalSumStr);
 
-        // Create a new Order
+        // create a new order
         Order order;
         order.setItems(items);
         order.setTotal(totalSum);
@@ -252,16 +257,16 @@ void DB::importProducts(string city)
     string line;
     while (getline(file, line))
     {
-        // Skip empty lines
+        // skip empty lines
         if (line.empty())
             continue;
 
-        // Parse the line
+        // parse the line
         stringstream ss(line);
         string name;
         string priceStr, pcsStr, costStr;
 
-        // Extract data separated by commas
+        // extract data separated by commas
         if (!getline(ss, name, ',') || !getline(ss, costStr, ',') || !getline(ss, priceStr, ',') || !getline(ss, pcsStr, ','))
         {
             cerr << "Error: Malformed line in file: " << line << '\n';
@@ -272,10 +277,10 @@ void DB::importProducts(string city)
         float price = stof(priceStr);
         int pcs = stoi(pcsStr);
 
-        // Create Product object
+        // create product object
         Product prod(name, cost, price, pcs);
 
-        // Add the product to the map
+        // add the product to the map
         products.insert({name, prod});
     }
 
@@ -320,15 +325,15 @@ void DB::importLoyalCostumers()
     string line;
     while (getline(file, line))
     {
-        // Skip empty lines
+        // skip empty lines
         if (line.empty())
             continue;
 
-        // Parse the line
+        // parse the line
         stringstream ss(line);
         string name, pointstr;
 
-        // Extract data separated by commas
+        // extract data separated by commas
         if (!getline(ss, name, ',') || !getline(ss, pointstr, ','))
         {
             cerr << "Error: Malformed line in file: " << line << '\n';
@@ -337,7 +342,7 @@ void DB::importLoyalCostumers()
 
         int points = stoi(pointstr);
 
-        // Add the client to the map
+        // add the client to the map
         loyalClients.insert({name, points});
     }
 

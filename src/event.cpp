@@ -1,12 +1,14 @@
 #include "..\lib\event.hpp"
+#include "..\lib\data.hpp"
 
-// Default constructor for MusicEvent
-MusicEvent::MusicEvent() : bandCost(0.0f), guest("Unknown")
+// default constructor
+MusicEvent::MusicEvent() : guest("Unknown"), bandCost(0.0f), totalCost(0.0f)
 {
     date = {1, 1, 2025};
 }
 
-MusicEvent::MusicEvent(DATE d, string g, float bandCost) : bandCost(bandCost), date(d), guest(g) {}
+// constructor
+MusicEvent::MusicEvent(DATE d, string g, float bCost) : date(d), guest(g), bandCost(bCost), totalCost(bandCost + lightingCost + sceneCost) {}
 
 void MusicEvent::eventInfo()
 {
@@ -15,40 +17,31 @@ void MusicEvent::eventInfo()
     cout << "Special Guest: " << guest << '\n';
 }
 
-void MusicEvent::specialGuest()
+// date getter
+DATE MusicEvent::getDate()
 {
-    cout << "Special Guest: " << guest << '\n';
+    return date;
 }
 
-// Implementation of calculateCost for MusicEvent
-float MusicEvent::calculateCost()
-{
-    return bandCost + lightingCost + sceneCost;
-}
-
-// Default constructor for TastingEvent
-TastingEvent::TastingEvent() : cost(0.0f), prod("Unknown")
+// default constructor
+TastingEvent::TastingEvent() : prod("Unknown"), cost(0.0f)
 {
     date = {1, 1, 2025};
 }
 
-TastingEvent::TastingEvent(DATE d, string p) : date(d), prod(p) {}
+// constructor
+TastingEvent::TastingEvent(DATE d, string p, int num) : date(d), prod(p), numFreeProd(num), cost(flowerCost + personalizedMugs + num * DB::getInstance()->getProducts().at(p).getPrice()) {}
 
 void TastingEvent::eventInfo()
 {
     cout << "Tasting Event Details:" << '\n';
     cout << "Date: " << date.day << "/" << date.month << "/" << date.year << '\n';
-    cout << "Only today the first 100 costumers get this special product for free: " << prod << '\n';
+    cout << "Special Product: " << prod << '\n';
+    cout << "Come try our special product of the day! The first 100 people get one for free\n";
 }
 
-// Implementation of specialProduct for TastingEvent
-string TastingEvent::specialProduct()
+// date getter
+DATE TastingEvent::getDate()
 {
-    return prod;
-}
-
-// Implementation of calculateCost for TastingEvent
-float TastingEvent::calculateCost()
-{
-    return flowerCost + personalizedMugs /*+ prod.price*/;
+    return date;
 }

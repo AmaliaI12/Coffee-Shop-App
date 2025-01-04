@@ -1,8 +1,6 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 
-#include <cstring>
-#include <iostream>
 #include "order.hpp"
 
 using namespace std;
@@ -60,6 +58,8 @@ public:
     void calculateShiftDuration();
 
     // special employee actions
+
+    // order management
     void logOrder(Order order);
 
     // employee management

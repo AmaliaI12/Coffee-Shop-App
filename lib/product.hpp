@@ -17,7 +17,7 @@ private:
     bool inStock;
 
 public:
-    //constructor
+    //constructors
     Product(string n,float cst, float pr, int num);
     Product();
 

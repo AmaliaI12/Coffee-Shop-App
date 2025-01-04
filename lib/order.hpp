@@ -1,26 +1,27 @@
 #ifndef ORDER_H
 #define ORDER_H
 
-#include <iostream>
-#include <cstring>
-#include <vector>
 #include "product.hpp"
 
-typedef struct{
+// define item data type to associate product with number
+typedef struct
+{
     Product product;
     int numPcs;
-}ITEM;
+} ITEM;
 
-class Order {
+class Order
+{
 private:
     string clientName;
     vector<ITEM> items;
     float totalSum;
+
 public:
-    //constructor
+    // constructor
     Order();
 
-    //getters and setters
+    // getters and setters
     void setClientName(string name);
     string getClientName();
 
@@ -30,10 +31,8 @@ public:
     void setItems(vector<ITEM> it);
     vector<ITEM> getItems();
 
-
     void addItem(Product prod, int num);
     void calculateTotal();
-
 };
 
 #endif

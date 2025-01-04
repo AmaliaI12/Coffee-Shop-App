@@ -1,7 +1,7 @@
 #include "..\lib\order.hpp"
 #include "..\lib\data.hpp"
 
-// constructor
+// default constructor
 Order::Order()
 {
     items.clear();
@@ -39,6 +39,7 @@ vector<ITEM> Order::getItems()
 
 void Order::calculateTotal()
 {
+    //calculate the total for the items
     totalSum = 0;
     for (ITEM item : items)
     {
@@ -50,5 +51,7 @@ void Order::addItem(Product prod, int num)
 {
     // substract the sold items from the stock
     DB::getInstance()->getProducts().at(prod.getName()).setPcs(prod.getPcs() - num);
+    
+    //add item to the order
     items.push_back({prod, num});
 }

@@ -128,13 +128,14 @@ void Employee::stockProduct()
 
 // BARISTA CLASS IMPLEMENTATION
 
-// constructors
+// constructor
 Barista::Barista(int id, string n, string job, TIME startS, TIME endS, int y)
     : Employee(id, n, job, startS, endS, y) {}
 
+// default constructor
 Barista::Barista() : Employee(0, "", "Barista", {0, 0}, {0, 0}, 0) {}
 
-// spectial barista action
+// special barista action -> order management
 void Barista::logOrder(Order order)
 {
     DB::getInstance()->getOrders().push_back(order);
@@ -156,7 +157,9 @@ void Manager::addEmployee()
     TIME startShift;
     TIME endShift;
     int yearsEmployed;
-    cout << "Employee information:\n";
+
+    // get new employee information
+    cout << "Enter employee information:\n";
 
     cout << "ID: ";
     cin >> id;
@@ -172,8 +175,10 @@ void Manager::addEmployee()
     cout << "Years employed in this coffee shop: ";
     cin >> yearsEmployed;
 
+    // create new employee object
     Employee emp(id, name, jobTitle, startShift, endShift, yearsEmployed);
 
+    // add employee to the map
     DB::getInstance()->getEmployees().insert({id, emp});
     cout << "Successfully added the employee.\n";
 }
@@ -196,11 +201,13 @@ void Manager::changeSchedule()
     TIME startShift;
     TIME endShift;
 
+    // read new program
     cout << "New start of shift: [hh mm] ";
     cin >> startShift.hour >> startShift.minute;
     cout << "New end of shift: [hh mm] ";
     cin >> endShift.hour >> endShift.minute;
 
+    // modify data structure
     DB::getInstance()->getEmployees().at(id).setStartShift(startShift);
     DB::getInstance()->getEmployees().at(id).setEndShift(endShift);
 }
@@ -217,6 +224,7 @@ void StockKeeper::addProduct()
     float cost, price;
     int pcs;
 
+    // read new product information
     cout << "Enter product information:\n";
     cout << "Name: ";
     getchar();
@@ -228,8 +236,10 @@ void StockKeeper::addProduct()
     cout << "Pieces in stock: ";
     cin >> pcs;
 
+    //create new product object
     Product prod(name, cost, price, pcs);
 
+    //add object to the map
     DB::getInstance()->getProducts().insert({name, prod});
 }
 
@@ -237,6 +247,7 @@ void StockKeeper::deleteProduct()
 {
     cout << "What product do you want to delete? ";
     string name;
+    getchar();
     getline(cin, name);
 
     DB::getInstance()->getProducts().erase(name);
@@ -248,6 +259,7 @@ void StockKeeper::stockProduct()
     int newpcs;
     cout << "Enter product information:\n";
     cout << "Name: ";
+    getchar();
     getline(cin, name);
     cout << "Updated stock: ";
     cin >> newpcs;
