@@ -6,7 +6,7 @@
 using namespace std;
 
 // define base salary and bonus
-#define baseSalary 4500 // brut
+#define baseSalary 4000 // brut
 #define bonusPerYear 350
 
 // define time structure for shifts
@@ -90,7 +90,7 @@ class Manager : public Employee
 public:
     Manager(int id, string n, string job, TIME startS, TIME endS, int y);
 
-    // void generateReport();
+    void generateReport(string city);
 
     // overriding the employee methods
     void addEmployee();

@@ -1,0 +1,17 @@
+Produs,Cantitate,Pret,Cost,Profit
+Coffee,5,5.99,2.00,19.95
+Black Tea,1,10.00,4.50,5.50
+Cappuccino,4,14.00,7.00,28.00
+Frappe,1,22.50,14.00,8.50
+Latte,4,13.00,5.00,32.00
+Coffee,2,5.99,2.00,7.98
+
+Profit total,101.93
+Angajat,Functie,Salariu
+Vadim Tudor,Manager,4700
+Marcel Pavel,Barista,4350
+Andrei Banuta,Stocker,5050
+Monica Popescu,Stocker,4700
+Diana Ivanovici-Sosoaca,Manager,5400
+
+Salarii totale,24200.00

@@ -1,5 +1,6 @@
 #include "..\lib\employee.hpp"
 #include "..\lib\data.hpp"
+#include "..\lib\raport.hpp"
 
 // EMPLOYEE CLASS IMPLEMENTATION
 
@@ -210,6 +211,21 @@ void Manager::changeSchedule()
     // modify data structure
     DB::getInstance()->getEmployees().at(id).setStartShift(startShift);
     DB::getInstance()->getEmployees().at(id).setEndShift(endShift);
+}
+
+void Manager::generateReport(string city) {
+    try {
+         string filename = "database\\" + city + "\\raport";
+
+        // generate reports in both languages.
+        Raport<Romanian>::generate(filename + "_ro.csv");
+        Raport<English>::generate(filename + "_en.csv");
+
+        cout << "Reports generated successfully by Manager: " << getName() << "\n";
+
+    } catch (const exception &e) {
+        cerr << "Error generating reports: " << e.what() << "\n";
+    }
 }
 
 // STOCKKEEPER CLASS IMPLEMENTATION

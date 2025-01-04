@@ -43,7 +43,8 @@ void managerAction()
         cout << "1) Add an employee\n";
         cout << "2) Delete an employee\n";
         cout << "3) Change an employee's schedule\n";
-        cout << "What would you like to do? [1/2/3]: ";
+        cout << "4) Close the shop and create daily raport\n";
+        cout << "What would you like to do? [1/2/3/4]: ";
 
         int action;
         cin >> action;
@@ -59,8 +60,11 @@ void managerAction()
         case 3:
             manager.changeSchedule();
             break;
+        case 4:
+            manager.generateReport(city);
+            break;
         default:
-            cout << "You have to choose 1/2/3.\n";
+            cout << "You have to choose 1/2/3/4.\n";
         }
 
         cout << "Would you like to do something else? (y/n) ";
