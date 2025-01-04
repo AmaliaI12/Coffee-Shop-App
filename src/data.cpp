@@ -416,11 +416,17 @@ void DB::importEvents(string city)
         // add the event to the respective map
         if (type == "Music")
         {
-            musicEvents[dateStr] = MusicEvent(dateStr, productGuest, bandCostOrCost);
+            MusicEvent mus(dateStr, productGuest, bandCostOrCost);
+           musicEvents.insert({dateStr, mus});
         }
         else if (type == "Tasting")
         {
-            tastingEvents[dateStr] = TastingEvent(dateStr, productGuest, static_cast<int>(bandCostOrCost));
+            int num = bandCostOrCost;
+            TastingEvent t;
+            t.setDate(dateStr);
+            t.setProd(productGuest);
+            t.setNumProd(num);
+            tastingEvents.insert({dateStr, t});
         }
         else
         {
@@ -462,4 +468,3 @@ void DB::exportEvents(string city)
     outFile.close();
     cout << "Events exported successfully to " << path << '\n';
 }
-

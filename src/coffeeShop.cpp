@@ -20,7 +20,7 @@ void importData()
     DB::getInstance()->importProducts(city);
     DB::getInstance()->importOrders(city);
     DB::getInstance()->importLoyalCostumers();
-    //DB::getInstance()->importEvents(city);
+    DB::getInstance()->importEvents(city);
 }
 
 // function to call the manager methods
@@ -349,15 +349,26 @@ int main()
     int ret = 1;
     do
     {
+        //if user changed the city reimport data 
         if (ret == 1)
             importData();
         
+        //check if there's a music event today
         auto it = DB::getInstance()->getMusicEvents().find(getTodayDate());
         if (it != DB::getInstance()->getMusicEvents().end())
         {
-            cout << "Today is a special event!\n";
+            cout << "Today is a special music event!\n";
             it->second.eventInfo();
         }
+
+        //check if there's a tasting event today
+        auto it2 = DB::getInstance()->getTastingEvents().find(getTodayDate());
+        if (it2 != DB::getInstance()->getTastingEvents().end())
+        {
+            cout << "Today is a special event!\n";
+            it2->second.eventInfo();
+        }
+
         else
             cout << "There's no event today\n";
         cout << "------------------WELCOME TO COOL COFFEE!------------------\n";

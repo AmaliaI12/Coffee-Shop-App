@@ -45,8 +45,12 @@ private:
     float cost;
 public:
     TastingEvent();
-    TastingEvent(string d, string p, int num);
     void eventInfo() override;
+
+    void setDate(string date);
+    void setProd(string p);
+    void setNumProd(int num);
+
     string getDate() override;
     string getProduct();
     int getNumProd();

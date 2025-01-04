@@ -39,9 +39,6 @@ TastingEvent::TastingEvent() : prod("Unknown"), cost(0.0f)
     dateStr = "1/1/2025";
 }
 
-// constructor
-TastingEvent::TastingEvent(string d, string p, int num) : dateStr(d), prod(p), numProd(num), cost(flowerCost + personalizedMugs + num * DB::getInstance()->getProducts().at(p).getPrice()) {}
-
 void TastingEvent::eventInfo()
 {
     cout << "Tasting Event Details:" << '\n';
@@ -50,10 +47,15 @@ void TastingEvent::eventInfo()
     cout << "Come try our special product of the day! The first 100 people get one for free\n";
 }
 
-// getters
+// getters and setters
 string TastingEvent::getDate()
 {
     return dateStr;
+}
+
+void TastingEvent::setDate(string date)
+{
+    dateStr = date;
 }
 
 string TastingEvent::getProduct()
@@ -61,7 +63,17 @@ string TastingEvent::getProduct()
     return prod;
 }
 
+void TastingEvent::setProd(string p)
+{
+    prod = p;
+}
+
 int TastingEvent::getNumProd()
 {
     return numProd;
+}
+
+void TastingEvent::setNumProd(int num)
+{
+    numProd = num;
 }
