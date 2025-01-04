@@ -374,7 +374,7 @@ void DB::exportLoyalCostumers()
     for (auto [name, points] : loyalClients)
     {
         file << name << ","
-             << points << ","
+             << points
              << "\n";
     }
 
@@ -417,7 +417,7 @@ void DB::importEvents(string city)
         if (type == "Music")
         {
             MusicEvent mus(dateStr, productGuest, bandCostOrCost);
-           musicEvents.insert({dateStr, mus});
+            musicEvents.insert({dateStr, mus});
         }
         else if (type == "Tasting")
         {

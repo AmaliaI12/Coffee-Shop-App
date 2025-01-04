@@ -208,13 +208,13 @@ void clientAction()
         getchar();
     } while (ans == 'y' || ans == 'Y');
 
-    //make loyalty card and apply discounts
+    // make loyalty card and apply discounts
     loyaltyCardAction(&order);
 
     cout << "\n------------Total-----------------\n";
     cout << "Your total is: " << order.getTotal() << '\n';
 
-    //log order using barista object
+    // log order using barista object
     Barista barista;
     barista.logOrder(order);
 
@@ -349,26 +349,25 @@ int main()
     int ret = 1;
     do
     {
-        //if user changed the city reimport data 
+        // if user changed the city reimport data
         if (ret == 1)
             importData();
-        
-        //check if there's a music event today
+
+        // check if there's a music event today
         auto it = DB::getInstance()->getMusicEvents().find(getTodayDate());
+        // check if there's a tasting event today
+        auto it2 = DB::getInstance()->getTastingEvents().find(getTodayDate());
+
         if (it != DB::getInstance()->getMusicEvents().end())
         {
             cout << "Today is a special music event!\n";
             it->second.eventInfo();
         }
-
-        //check if there's a tasting event today
-        auto it2 = DB::getInstance()->getTastingEvents().find(getTodayDate());
-        if (it2 != DB::getInstance()->getTastingEvents().end())
+        else if (it2 != DB::getInstance()->getTastingEvents().end())
         {
             cout << "Today is a special event!\n";
             it2->second.eventInfo();
         }
-
         else
             cout << "There's no event today\n";
         cout << "------------------WELCOME TO COOL COFFEE!------------------\n";
