@@ -99,6 +99,18 @@ float applyDiscount(int value, float total)
     return total;
 }
 
+void makeLoyaltyCard(char *hasCard, Order *order)
+{
+    cout << "Would you like to make a loyalty card? [y/n] ";
+    char wantsCard;
+    cin >> wantsCard;
+    if (wantsCard == 'Y' || wantsCard == 'y')
+    {
+        DB::getInstance()->getLoyalClients().insert({order->getClientName(), 0});
+        *hasCard = 'y';
+    }
+}
+
 // handle loyalty card actions
 void loyaltyCardAction(Order *order)
 {
@@ -115,14 +127,7 @@ void loyaltyCardAction(Order *order)
         cout << "25p -> 15 %off your next order!\n";
         cout << "50p -> 30 %off your next order!\n";
 
-        cout << "Would you like to make a loyalty card? [y/n] ";
-        char wantsCard;
-        cin >> wantsCard;
-        if (wantsCard == 'Y' || wantsCard == 'y')
-        {
-            DB::getInstance()->getLoyalClients().insert({order->getClientName(), 0});
-            hasCard = 'y';
-        }
+        makeLoyaltyCard(&hasCard, order);
     }
 
     // calculate total
@@ -130,6 +135,12 @@ void loyaltyCardAction(Order *order)
 
     if (hasCard == 'y' || hasCard == 'Y')
     {
+        auto it = DB::getInstance()->getLoyalClients().find(order->getClientName());
+        if (it == DB::getInstance()->getLoyalClients().end())
+        {
+            cout << "You do not have a loyalty card.\n";
+            return;
+        }
         int pts = DB::getInstance()->getLoyalClients().at(order->getClientName());
         if (pts >= 50)
         {
@@ -222,7 +233,6 @@ void clientAction()
         {
             cout << "We don't currently have " << prodName << '\n';
         }
-
 
         cout << "Do you want something else? [y/n] ";
         cin >> ans;

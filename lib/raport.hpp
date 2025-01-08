@@ -13,38 +13,38 @@ public:
 
 class Romanian {
 public:
-    static std::string header() {
+    static string header() {
         return "Produs,Cantitate,Pret,Cost,Profit\n";
     }
 
-    static std::string totalProfitLabel() {
+    static string totalProfitLabel() {
         return "Profit total";
     }
 
-    static std::string employeeHeader() {
+    static string employeeHeader() {
         return "Angajat,Functie,Salariu\n";
     }
 
-    static std::string totalSalaryLabel() {
+    static string totalSalaryLabel() {
         return "Salarii totale";
     }
 };
 
 class English {
 public:
-    static std::string header() {
+    static string header() {
         return "Product,Quantity,Price,Cost,Profit\n";
     }
 
-    static std::string totalProfitLabel() {
+    static string totalProfitLabel() {
         return "Total Profit";
     }
 
-    static std::string employeeHeader() {
+    static string employeeHeader() {
         return "Employee,Position,Salary\n";
     }
 
-    static std::string totalSalaryLabel() {
+    static string totalSalaryLabel() {
         return "Total Salaries";
     }
 };
