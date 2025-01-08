@@ -12,8 +12,18 @@ string city;
 // import data from the database
 void importData()
 {
-    cout << "Choose a city: Bucuresti, Timisoara, Sibiu, Cluj, Rm Valcea. ";
-    getline(cin, city);
+    int goodInput;
+    do
+    {
+        goodInput = 1;
+        cout << "Choose a city: Bucuresti, Timisoara, Sibiu, Cluj, Rm Valcea. ";
+        getline(cin, city);
+        if (city != "Bucuresti" && city != "Timisoara" && city != "Sibiu" && city != "Cluj" && city != "Rm Valcea")
+        {
+            goodInput = 0;
+            cout << "Please select one of the listed cities.\n";
+        }
+    } while (goodInput != 1);
 
     DB::getInstance();
     DB::getInstance()->importEmployees(city);
@@ -34,6 +44,7 @@ void managerAction()
     // create manager object to access the specific methods
     auto it = DB::getInstance()->getEmployees().find(id);
     Employee emp = it->second;
+
     Manager manager(emp.getEmployeeID(), emp.getName(), emp.getJobTitle(), emp.getStartShift(), emp.getEndShift(), emp.getYearsEmployed());
 
     char ans;
@@ -158,6 +169,7 @@ void clientAction()
 
     // add name to the order
     order.setClientName(name);
+    cout << order.getClientName() << " fgdsdfzgbfgh\n";
 
     // client can order multiple items
     char ans;
@@ -168,40 +180,49 @@ void clientAction()
         getline(cin, prodName);
 
         // search the product by name in database
-        Product prod = DB::getInstance()->getProducts().at(prodName);
+        auto it = DB::getInstance()->getProducts().find(prodName);
 
-        if (!prod.isInStock())
+        if (it != DB::getInstance()->getProducts().end())
         {
-            cout << "We do not have " << prodName << " at this moment.\n";
+            Product prod = it->second;
+            if (!prod.isInStock())
+            {
+                cout << "We do not have " << prodName << " at this moment.\n";
+            }
+            else
+            {
+                cout << "How many? ";
+                int num;
+                cin >> num;
+
+                // handle insufficient stock
+                if (num > prod.getPcs())
+                {
+                    cout << "There are only " << prod.getPcs() << " left. Do you still want this product? [y/n] ";
+
+                    char wantProd;
+
+                    cin >> wantProd;
+                    if (wantProd == 'y' || wantProd == 'Y')
+                    {
+                        cout << "How many? (maximum " << prod.getPcs() << ") ";
+                        cin >> num;
+                        getchar();
+
+                        // add item to order
+                        order.addItem(prod, num);
+                    }
+                }
+                else
+                    // add item to order
+                    order.addItem(prod, num);
+            }
         }
         else
         {
-            cout << "How many? ";
-            int num;
-            cin >> num;
-
-            // handle insufficient stock
-            if (num > prod.getPcs())
-            {
-                cout << "There are only " << prod.getPcs() << " left. Do you still want this product? [y/n] ";
-
-                char wantProd;
-
-                cin >> wantProd;
-                if (wantProd == 'y' || wantProd == 'Y')
-                {
-                    cout << "How many? (maximum " << prod.getPcs() << ") ";
-                    cin >> num;
-                    getchar();
-
-                    // add item to order
-                    order.addItem(prod, num);
-                }
-            }
-            else
-                // add item to order
-                order.addItem(prod, num);
+            cout << "We don't currently have " << prodName << '\n';
         }
+
 
         cout << "Do you want something else? [y/n] ";
         cin >> ans;

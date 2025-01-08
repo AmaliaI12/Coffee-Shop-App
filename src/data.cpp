@@ -74,6 +74,9 @@ void DB::importEmployees(string city)
         return;
     }
 
+    // erase data from previous city
+    employees.clear();
+
     string line;
     while (getline(file, line))
     {
@@ -155,6 +158,9 @@ void DB::importOrders(string city)
 {
     string path = "database\\" + city + "\\orders.csv";
 
+    // erase data from previous city if needed
+    orders.clear();
+
     ifstream file(path);
     if (!file.is_open())
     {
@@ -211,6 +217,7 @@ void DB::importOrders(string city)
         Order order;
         order.setItems(items);
         order.setTotal(totalSum);
+        order.setClientName(cliName);
 
         importedOrders.push_back(order);
     }
@@ -234,11 +241,13 @@ void DB::exportOrders(string city)
 
     for (Order order : orders)
     {
-        file << order.getClientName() << ',';
+        string client = order.getClientName();
+        cout << '!' << client << '\n';
         vector<ITEM> items = order.getItems();
 
         for (size_t i = 0; i < items.size(); ++i)
         {
+            file << client << ',';
             ITEM item = items[i];
             file << item.product.getName() << ":" << item.numPcs;
 
@@ -256,6 +265,9 @@ void DB::exportOrders(string city)
 void DB::importProducts(string city)
 {
     string path = "database\\" + city + "\\products.csv";
+
+    // erase data from previous city if needed
+    products.clear();
 
     ifstream file(path);
     if (!file.is_open())
@@ -325,6 +337,9 @@ void DB::importLoyalCostumers()
 {
     string path = "database\\loyalCostumers.csv";
 
+    // erase data from previous city
+    loyalClients.clear();
+
     ifstream file(path);
     if (!file.is_open())
     {
@@ -387,6 +402,10 @@ void DB::importEvents(string city)
 {
     string path = "database\\" + city + "\\events.csv";
     ifstream file(path);
+
+    // erase data from previous city if needed
+    musicEvents.clear();
+    tastingEvents.clear();
 
     if (!file.is_open())
     {
