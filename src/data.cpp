@@ -380,7 +380,7 @@ void DB::importLoyalCostumers()
 
 void DB::exportLoyalCostumers()
 {
-    fs::path filepath = fs::path("database") / "loyalCustomers.csv";
+    fs::path filepath = fs::path("database") / "loyalCostumers.csv";
 
     ofstream file(filepath);
     if (!file.is_open())

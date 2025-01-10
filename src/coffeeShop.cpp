@@ -346,6 +346,7 @@ int action()
         }
         else if (status == 5)
         {
+            cout << "Goodbye!\n";
             return -1;
         }
         else
