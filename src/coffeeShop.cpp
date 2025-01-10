@@ -180,7 +180,6 @@ void clientAction()
 
     // add name to the order
     order.setClientName(name);
-    cout << order.getClientName() << " fgdsdfzgbfgh\n";
 
     // client can order multiple items
     char ans;
@@ -351,7 +350,7 @@ int action()
         }
         else
         {
-            throw invalid_argument("Invalid input! Please select 1, 2, 3 or 4.\n");
+            throw invalid_argument("Invalid input! Please select 1, 2, 3, 4 or 5.\n");
         }
     }
     catch (const invalid_argument &e)

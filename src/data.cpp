@@ -1,4 +1,7 @@
 #include "../lib/data.hpp"
+#include <filesystem>
+
+ namespace fs = std::filesystem;
 
 // initialize null instance
 DB *DB::instance = nullptr;
@@ -64,13 +67,13 @@ map<string, TastingEvent> &DB::getTastingEvents()
 void DB::importEmployees(string city)
 {
     // parse the file path
-    string path = "database\\" + city + "\\employees.csv";
+    fs::path filepath = fs::path("database") / city / "employees.csv";
 
     // handle error
-    ifstream file(path);
+    ifstream file(filepath);
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file " << path << '\n';
+        cerr << "Error: Could not open file " << filepath << '\n';
         return;
     }
 
@@ -121,17 +124,17 @@ void DB::importEmployees(string city)
     }
 
     file.close();
-    cout << "Data imported successfully from " << path << '\n';
+    // cout << "Data imported successfully from " << filepath << '\n';
 }
 
 void DB::exportEmployees(string city)
 {
-    string path = "database\\" + city + "\\employees.csv";
+    fs::path filepath = fs::path("database") / city / "employees.csv";
 
-    ofstream file(path);
+    ofstream file(filepath);
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file " << path << '\n';
+        cerr << "Error: Could not open file " << filepath << '\n';
         return;
     }
 
@@ -151,20 +154,20 @@ void DB::exportEmployees(string city)
     }
 
     file.close();
-    cout << "Data exported successfully to " << path << '\n';
+    // cout << "Data exported successfully to " << path << '\n';
 }
 
 void DB::importOrders(string city)
 {
-    string path = "database\\" + city + "\\orders.csv";
+    fs::path filepath = fs::path("database") / city / "orders.csv";
 
     // erase data from previous city if needed
     orders.clear();
 
-    ifstream file(path);
+    ifstream file(filepath);
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file " << path << '\n';
+        cerr << "Error: Could not open file " << filepath << '\n';
         return;
     }
 
@@ -225,17 +228,17 @@ void DB::importOrders(string city)
     orders = importedOrders;
 
     file.close();
-    cout << "Data imported successfully from " << path << '\n';
+    // cout << "Data imported successfully from " << path << '\n';
 }
 
 void DB::exportOrders(string city)
 {
-    string path = "database\\" + city + "\\orders.csv";
+    fs::path filepath = fs::path("database") / city / "orders.csv";
 
-    ofstream file(path);
+    ofstream file(filepath);
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file " << path << '\n';
+        cerr << "Error: Could not open file " << filepath << '\n';
         return;
     }
 
@@ -245,9 +248,9 @@ void DB::exportOrders(string city)
         cout << '!' << client << '\n';
         vector<ITEM> items = order.getItems();
 
+        file << client << ',';
         for (size_t i = 0; i < items.size(); ++i)
         {
-            file << client << ',';
             ITEM item = items[i];
             file << item.product.getName() << ":" << item.numPcs;
 
@@ -259,20 +262,20 @@ void DB::exportOrders(string city)
     }
 
     file.close();
-    cout << "Data exported successfully to " << path << '\n';
+    // cout << "Data exported successfully to " << path << '\n';
 }
 
 void DB::importProducts(string city)
 {
-    string path = "database\\" + city + "\\products.csv";
+    fs::path filepath = fs::path("database") / city / "products.csv";
 
     // erase data from previous city if needed
     products.clear();
 
-    ifstream file(path);
+    ifstream file(filepath);
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file " << path << '\n';
+        cerr << "Error: Could not open file " << filepath << '\n';
         return;
     }
 
@@ -307,17 +310,17 @@ void DB::importProducts(string city)
     }
 
     file.close();
-    cout << "Data imported successfully from " << path << '\n';
+    // cout << "Data imported successfully from " << path << '\n';
 }
 
 void DB::exportProducts(string city)
 {
-    string path = "database\\" + city + "\\products.csv";
+    fs::path filepath = fs::path("database") / city / "products.csv";
 
-    ofstream file(path);
+    ofstream file(filepath);
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file " << path << '\n';
+        cerr << "Error: Could not open file " << filepath << '\n';
         return;
     }
 
@@ -330,20 +333,20 @@ void DB::exportProducts(string city)
     }
 
     file.close();
-    cout << "Data exported successfully to " << path << '\n';
+    // cout << "Data exported successfully to " << path << '\n';
 }
 
 void DB::importLoyalCostumers()
 {
-    string path = "database\\loyalCostumers.csv";
+    fs::path filepath = fs::path("database") / "loyalCostumers.csv";
 
     // erase data from previous city
     loyalClients.clear();
 
-    ifstream file(path);
+    ifstream file(filepath);
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file " << path << '\n';
+        cerr << "Error: Could not open file " << filepath << '\n';
         return;
     }
 
@@ -372,17 +375,17 @@ void DB::importLoyalCostumers()
     }
 
     file.close();
-    cout << "Data imported successfully from " << path << '\n';
+    // cout << "Data imported successfully from " << path << '\n';
 }
 
 void DB::exportLoyalCostumers()
 {
-    string path = "database\\loyalCostumers.csv";
+    fs::path filepath = fs::path("database") / "loyalCustomers.csv";
 
-    ofstream file(path);
+    ofstream file(filepath);
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file " << path << '\n';
+        cerr << "Error: Could not open file " << filepath << '\n';
         return;
     }
 
@@ -394,14 +397,14 @@ void DB::exportLoyalCostumers()
     }
 
     file.close();
-    cout << "Data exported successfully to " << path << '\n';
+    // cout << "Data exported successfully to " << path << '\n';
 }
 
 // import events from a single CSV file
 void DB::importEvents(string city)
 {
-    string path = "database\\" + city + "\\events.csv";
-    ifstream file(path);
+    fs::path filepath = fs::path("database") / city / "events.csv";
+    ifstream file(filepath);
 
     // erase data from previous city if needed
     musicEvents.clear();
@@ -409,7 +412,7 @@ void DB::importEvents(string city)
 
     if (!file.is_open())
     {
-        cerr << "Error: Could not open file at " << path << '\n';
+        cerr << "Error: Could not open file at " << filepath << '\n';
         return;
     }
 
@@ -454,13 +457,13 @@ void DB::importEvents(string city)
     }
 
     file.close();
-    cout << "Data imported successfully from " << path << '\n';
+    // cout << "Data imported successfully from " << path << '\n';
 }
 
 void DB::exportEvents(string city)
 {
-    string path = "database/" + city + "/events.csv";
-    ofstream outFile(path);
+    fs::path filepath = fs::path("database") / city / "events.csv";
+    ofstream outFile(filepath);
 
     if (!outFile.is_open())
     {
@@ -485,5 +488,5 @@ void DB::exportEvents(string city)
     }
 
     outFile.close();
-    cout << "Events exported successfully to " << path << '\n';
+    // cout << "Events exported successfully to " << path << '\n';
 }
